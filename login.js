@@ -4,7 +4,7 @@ import GoogleIcon from "./logos/google.png";
 import MicrosoftIcon from "./logos/microsoft.png";
 import FacebookIcon from "./logos/facebook.png";
 import AppleIcon from "./logos/apple.png";
-import "./App.css"; // Assuming this includes the Poppins font import.
+import "./App.css"; 
 
 function Login() {
   return (
@@ -14,14 +14,14 @@ function Login() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        fontFamily: "'Poppins', sans-serif", // Applying Poppins font
+        fontFamily: "'Poppins', sans-serif", 
       }}
     >
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "350px", // Slightly smaller width
+          width: "350px", 
           padding: "20px",
           borderRadius: "8px",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -59,7 +59,7 @@ function Login() {
             startIcon={<img src={FacebookIcon} alt="Facebook" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />}
             sx={{
               width: "70px",
-              height: "70px", // Slightly smaller button size
+              height: "70px", 
               borderRadius: "50%",
               marginRight: "1rem",
               padding: 0,
@@ -70,7 +70,7 @@ function Login() {
             startIcon={<img src={AppleIcon} alt="Apple" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />}
             sx={{
               width: "70px",
-              height: "70px", // Slightly smaller button size
+              height: "70px", 
               borderRadius: "50%",
               padding: 0,
             }}
