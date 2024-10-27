@@ -5,6 +5,7 @@ import MicrosoftIcon from "./logos/microsoft.png";
 import FacebookIcon from "./logos/facebook.png";
 import AppleIcon from "./logos/apple.png";
 import "./App.css"; 
+
 function Signup() {
   return (
     <Box
@@ -20,7 +21,7 @@ function Signup() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "350px", 
+          width: "350px",
           padding: "20px",
           borderRadius: "8px",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -34,14 +35,14 @@ function Signup() {
           startIcon={<img src={GoogleIcon} alt="Google" style={{ width: "20px" }} />}
           sx={{ width: "100%", marginBottom: "1rem" }}
         >
-          CONTINUE WITH GOOGLE
+          Continue with Google
         </Button>
         <Button
           variant="outlined"
           startIcon={<img src={MicrosoftIcon} alt="Microsoft" style={{ width: "20px" }} />}
           sx={{ width: "100%", marginBottom: "1rem" }}
         >
-          CONTINUE WITH MICROSOFT
+          Continue with Microsoft
         </Button>
         <Typography sx={{ textAlign: "center", marginBottom: "1rem" }}>
           or continue with
@@ -57,10 +58,9 @@ function Signup() {
             variant="outlined"
             startIcon={<img src={FacebookIcon} alt="Facebook" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />}
             sx={{
-              width: "70px",
-              height: "70px", 
+              width: "50px",
+              height: "50px",
               borderRadius: "50%",
-              marginRight: "1rem",
               padding: 0,
             }}
           />
@@ -68,26 +68,13 @@ function Signup() {
             variant="outlined"
             startIcon={<img src={AppleIcon} alt="Apple" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />}
             sx={{
-              width: "70px",
-              height: "70px", 
+              width: "50px",
+              height: "50px",
               borderRadius: "50%",
               padding: 0,
             }}
           />
         </Box>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#5B945B",
-            color: "#fff",
-            width: "100%",
-            marginBottom: "1rem",
-            padding: "10px 0",
-            "&:hover": { backgroundColor: "#4F7942" },
-          }}
-        >
-          Sign up
-        </Button>
         <Typography variant="body2" sx={{ textAlign: "center" }}>
           Already have an account?{" "}
           <Link href="/login" underline="hover">
