@@ -4,7 +4,7 @@ import GoogleIcon from "./logos/google.png";
 import MicrosoftIcon from "./logos/microsoft.png";
 import FacebookIcon from "./logos/facebook.png";
 import AppleIcon from "./logos/apple.png";
-import "./App.css"; 
+import "./App.css"; // Assuming this includes the Poppins font import.
 
 function Login() {
   return (
@@ -14,14 +14,14 @@ function Login() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        fontFamily: "'Poppins', sans-serif", 
+        fontFamily: "'Poppins', sans-serif", // Applying Poppins font
       }}
     >
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "350px", 
+          width: "350px", // Slightly smaller width
           padding: "20px",
           borderRadius: "8px",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -59,7 +59,7 @@ function Login() {
             startIcon={<img src={FacebookIcon} alt="Facebook" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />}
             sx={{
               width: "70px",
-              height: "70px", 
+              height: "70px", // Slightly smaller button size
               borderRadius: "50%",
               marginRight: "1rem",
               padding: 0,
@@ -70,25 +70,12 @@ function Login() {
             startIcon={<img src={AppleIcon} alt="Apple" style={{ width: "40px", height: "40px", borderRadius: "50%" }} />}
             sx={{
               width: "70px",
-              height: "70px", 
+              height: "70px", // Slightly smaller button size
               borderRadius: "50%",
               padding: 0,
             }}
           />
         </Box>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#5B945B",
-            color: "#fff",
-            width: "100%",
-            marginBottom: "1rem",
-            padding: "10px 0",
-            "&:hover": { backgroundColor: "#4F7942" },
-          }}
-        >
-          Sign up
-        </Button>
         <Typography variant="body2" sx={{ textAlign: "center" }}>
           Don’t have an account?{" "}
           <Link href="/signup" underline="hover">
