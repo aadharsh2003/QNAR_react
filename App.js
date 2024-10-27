@@ -1,4 +1,4 @@
-import { Route, Router } from "wouter";
+import { Route, Switch } from "wouter"; 
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,10 +21,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <Switch>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-      </Router>
+      </Switch>
     </ThemeProvider>
   );
 }
