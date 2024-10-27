@@ -1,16 +1,20 @@
 import { Route, Router } from "wouter";
-import React, { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import "@fontsource/quicksand";
-import './App.css';
-import Login from "./login";  // Corrected path
-import Signup from "./signup";  // Corrected path
+import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Login from "./login";
+import Signup from "./signup";
+import "./App.css"; 
 
 function App() {
   const theme = createTheme({
     typography: {
-      fontFamily: 'Quicksand',
+      fontFamily: "Poppins, sans-serif", 
+    },
+    palette: {
+      primary: {
+        main: "#5B945B", 
+      },
     },
   });
 
@@ -18,7 +22,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Route path="/" component={Login} />
+        <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
       </Router>
     </ThemeProvider>
