@@ -1,16 +1,42 @@
 import React, { useState } from "react";
 import { Box, Button, Typography, TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import ImageIcon from "@mui/icons-material/Image";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 function MatchingPairs() {
   const [questions, setQuestions] = useState([
-    { col1: "", col2: "" },
-    { col1: "", col2: "" },
-    { col1: "", col2: "" },
+    { col1: "", col2: "", col1Image: null, col2Image: null },
+    { col1: "", col2: "", col1Image: null, col2Image: null },
+    { col1: "", col2: "", col1Image: null, col2Image: null },
   ]);
 
   const addQuestionRow = () => {
-    setQuestions([...questions, { col1: "", col2: "" }]);
+    setQuestions([...questions, { col1: "", col2: "", col1Image: null, col2Image: null }]);
+  };
+
+  const handleImageUpload = (index, col, event) => {
+    const newQuestions = [...questions];
+    newQuestions[index][`${col}Image`] = URL.createObjectURL(event.target.files[0]);
+    setQuestions(newQuestions);
+  };
+
+  const handleDeleteRow = (index) => {
+    setQuestions(questions.filter((_, i) => i !== index));
+  };
+
+  const handleCopyRow = (index) => {
+    setQuestions([...questions, { ...questions[index] }]);
+  };
+
+  const moveRow = (index, direction) => {
+    const newQuestions = [...questions];
+    const [movedRow] = newQuestions.splice(index, 1);
+    newQuestions.splice(index + direction, 0, movedRow);
+    setQuestions(newQuestions);
   };
 
   return (
@@ -46,6 +72,7 @@ function MatchingPairs() {
               placeholder="Search in community"
               size="small"
               variant="outlined"
+              sx={{ width: "220px" }} /* Ensures the TextField and Button match in width */
               InputProps={{
                 endAdornment: (
                   <IconButton>
@@ -54,7 +81,9 @@ function MatchingPairs() {
                 ),
               }}
             />
-            <Button variant="outlined">My games</Button>
+            <Button variant="outlined" sx={{ width: "220px", height: "40px" }}>
+              My games
+            </Button>
           </Box>
         </Box>
 
@@ -80,37 +109,78 @@ function MatchingPairs() {
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ mb: 1 }}>*Column 1</Typography>
             {questions.map((question, index) => (
-              <TextField
-                key={`col1-${index}`}
-                placeholder="Add text"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                value={question.col1}
-                onChange={(e) => {
-                  const newQuestions = [...questions];
-                  newQuestions[index].col1 = e.target.value;
-                  setQuestions(newQuestions);
-                }}
-              />
+              <Box key={index} sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <TextField
+                  placeholder="Add text"
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  value={question.col1}
+                  onChange={(e) => {
+                    const newQuestions = [...questions];
+                    newQuestions[index].col1 = e.target.value;
+                    setQuestions(newQuestions);
+                  }}
+                />
+                <IconButton component="label">
+                  <ImageIcon />
+                  <input type="file" hidden onChange={(e) => handleImageUpload(index, "col1", e)} />
+                </IconButton>
+                {question.col1Image && (
+                  <img
+                    src={question.col1Image}
+                    alt="Column 1"
+                    style={{ width: "40px", height: "40px", borderRadius: "8px", marginLeft: "8px" }}
+                  />
+                )}
+              </Box>
             ))}
           </Box>
+
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ mb: 1 }}>*Column 2</Typography>
             {questions.map((question, index) => (
-              <TextField
-                key={`col2-${index}`}
-                placeholder="Add text"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                value={question.col2}
-                onChange={(e) => {
-                  const newQuestions = [...questions];
-                  newQuestions[index].col2 = e.target.value;
-                  setQuestions(newQuestions);
-                }}
-              />
+              <Box key={index} sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <TextField
+                  placeholder="Add text"
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  value={question.col2}
+                  onChange={(e) => {
+                    const newQuestions = [...questions];
+                    newQuestions[index].col2 = e.target.value;
+                    setQuestions(newQuestions);
+                  }}
+                />
+                <IconButton component="label">
+                  <ImageIcon />
+                  <input type="file" hidden onChange={(e) => handleImageUpload(index, "col2", e)} />
+                </IconButton>
+                {question.col2Image && (
+                  <img
+                    src={question.col2Image}
+                    alt="Column 2"
+                    style={{ width: "40px", height: "40px", borderRadius: "8px", marginLeft: "8px" }}
+                  />
+                )}
+                <IconButton onClick={() => handleCopyRow(index)}>
+                  <ContentCopyIcon />
+                </IconButton>
+                <IconButton onClick={() => handleDeleteRow(index)}>
+                  <DeleteIcon />
+                </IconButton>
+                {index > 0 && (
+                  <IconButton onClick={() => moveRow(index, -1)}>
+                    <ArrowUpwardIcon />
+                  </IconButton>
+                )}
+                {index < questions.length - 1 && (
+                  <IconButton onClick={() => moveRow(index, 1)}>
+                    <ArrowDownwardIcon />
+                  </IconButton>
+                )}
+              </Box>
             ))}
           </Box>
         </Box>

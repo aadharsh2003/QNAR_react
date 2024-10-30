@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import { Box, Button, Typography, FormControl, FormControlLabel, RadioGroup, Radio, TextField, IconButton } from "@mui/material";
+import { Box, Button, Typography, FormControl, FormControlLabel, RadioGroup, Radio, TextField } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import "./gameSettings.css";
 
 function GameSettings() {
-  const [images, setImages] = useState([null, null, null, null]); // State to hold images
+  const [images, setImages] = useState([null, null, null, null]);
 
-  // Function to handle image upload
   const handleImageUpload = (index, event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         const newImages = [...images];
-        newImages[index] = reader.result; // Update the specific image slot
+        newImages[index] = reader.result;
         setImages(newImages);
       };
       reader.readAsDataURL(file);
@@ -49,18 +48,19 @@ function GameSettings() {
               Create a matching pairs game and share it with your audience.
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, width: "fit-content" }}>
             <TextField
               placeholder="Search in community"
               size="small"
               variant="outlined"
+              sx={{ width: "180px" }} // Set width here
               InputProps={{
                 endAdornment: (
-                  <Button variant="contained">Search</Button>
+                  <Button variant="contained" sx={{ width: "100px", height: "100%" }}>Search</Button> // Matching height
                 ),
               }}
             />
-            <Button variant="outlined">My games</Button>
+            <Button variant="outlined" sx={{ width: "180px", height: "40px" }}>My games</Button> {/* Matching width and height */}
           </Box>
         </Box>
 
