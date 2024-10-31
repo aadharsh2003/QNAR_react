@@ -54,7 +54,7 @@ function GameSettings() {
               placeholder="Search in community"
               size="small"
               variant="outlined"
-              sx={{ width: "200px" }}  // Adjust width for alignment
+              sx={{ width: "200px" }}  
             />
             <Button variant="contained" sx={{ width: "100px" }}>Search</Button>
             <Button variant="outlined" sx={{ width: "100px" }}>My games</Button>
@@ -135,7 +135,6 @@ function GameSettings() {
           </Box>
         </Box>
 
-        {/* Next Button */}
         <Box sx={{ textAlign: "right", mt: 3 }}>
           <Button variant="contained" color="primary">
             Next

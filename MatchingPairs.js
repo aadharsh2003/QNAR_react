@@ -72,7 +72,7 @@ function MatchingPairs() {
               placeholder="Search in community"
               size="small"
               variant="outlined"
-              sx={{ width: "220px" }} /* Ensures the TextField and Button match in width */
+              sx={{ width: "220px" }} 
               InputProps={{
                 endAdornment: (
                   <IconButton>
