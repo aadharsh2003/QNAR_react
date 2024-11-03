@@ -1,10 +1,20 @@
 import React, { useState } from "react";
-import { Box, Button, Typography, FormControl, FormControlLabel, RadioGroup, Radio, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import "./gameSettings.css";
 
 function GameSettings() {
-  const [images, setImages] = useState([null, null, null, null]);
+  const [images, setImages] = useState([null, null, null, null]); // State to hold images
 
   // Function to handle image upload
   const handleImageUpload = (index, event) => {
@@ -13,7 +23,7 @@ function GameSettings() {
       const reader = new FileReader();
       reader.onload = () => {
         const newImages = [...images];
-        newImages[index] = reader.result;
+        newImages[index] = reader.result; // Update the specific image slot
         setImages(newImages);
       };
       reader.readAsDataURL(file);
@@ -39,6 +49,7 @@ function GameSettings() {
             justifyContent: "space-between",
             alignItems: "center",
             mb: 2,
+            flexDirection: { xs: "column", sm: "row" }, // Responsiveness
           }}
         >
           <Box>
@@ -49,15 +60,23 @@ function GameSettings() {
               Create a matching pairs game and share it with your audience.
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, width: "100%", mt: { xs: 2, sm: 0 } }}>
             <TextField
               placeholder="Search in community"
               size="small"
               variant="outlined"
-              sx={{ width: "200px" }}  
+              sx={{ flex: 1 }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton>
+                    <ImageIcon />
+                  </IconButton>
+                ),
+              }}
             />
-            <Button variant="contained" sx={{ width: "100px" }}>Search</Button>
-            <Button variant="outlined" sx={{ width: "100px" }}>My games</Button>
+            <Button variant="outlined" sx={{ height: "100%", width: { xs: "100%", sm: "auto" } }}>
+              My games
+            </Button>
           </Box>
         </Box>
 
@@ -69,7 +88,15 @@ function GameSettings() {
 
           {/* Toggles for game settings */}
           {["Game sounds", "Repeat wrong answers", "Show correct answers when game ends"].map((label) => (
-            <Box key={label} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+            <Box
+              key={label}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+              }}
+            >
               <Typography>{label}</Typography>
               <FormControl component="fieldset">
                 <RadioGroup row defaultValue="On">
@@ -103,11 +130,26 @@ function GameSettings() {
                 <input
                   type="file"
                   accept="image/*"
-                  style={{ position: "absolute", width: "100%", height: "100%", opacity: 0, cursor: "pointer" }}
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    opacity: 0,
+                    cursor: "pointer",
+                  }}
                   onChange={(e) => handleImageUpload(i, e)}
                 />
                 {image ? (
-                  <img src={image} alt={`Uploaded ${i}`} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
+                  <img
+                    src={image}
+                    alt={`Uploaded ${i}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                    }}
+                  />
                 ) : (
                   <ImageIcon sx={{ fontSize: 40, color: "#888" }} />
                 )}
@@ -130,11 +172,17 @@ function GameSettings() {
             <Typography sx={{ color: "#888" }}>or upload your own:</Typography>
             <Button variant="outlined" startIcon={<ImageIcon />} component="label">
               Add image
-              <input type="file" hidden accept="image/*" onChange={(e) => handleImageUpload(images.length, e)} />
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={(e) => handleImageUpload(images.length, e)}
+              />
             </Button>
           </Box>
         </Box>
 
+        {/* Next Button */}
         <Box sx={{ textAlign: "right", mt: 3 }}>
           <Button variant="contained" color="primary">
             Next

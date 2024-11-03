@@ -47,13 +47,14 @@ function MatchingPairs() {
         alignItems: "center",
         padding: "20px",
         backgroundColor: "#F5F5F5",
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       <Box sx={{ width: "100%", maxWidth: "800px", padding: "20px" }}>
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
             alignItems: "center",
             mb: 2,
@@ -67,12 +68,12 @@ function MatchingPairs() {
               Create a matching pairs game and share it with your audience.
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: { xs: 2, sm: 0 }, width: "100%" }}>
             <TextField
               placeholder="Search in community"
               size="small"
               variant="outlined"
-              sx={{ width: "220px" }} 
+              sx={{ flexGrow: 1 }}
               InputProps={{
                 endAdornment: (
                   <IconButton>
@@ -81,7 +82,7 @@ function MatchingPairs() {
                 ),
               }}
             />
-            <Button variant="outlined" sx={{ width: "220px", height: "40px" }}>
+            <Button variant="outlined" sx={{ width: "100%" }}>
               My games
             </Button>
           </Box>
@@ -91,21 +92,11 @@ function MatchingPairs() {
           <Typography variant="h6" sx={{ color: "#5B945B", fontWeight: "bold", mb: 1 }}>
             Add content
           </Typography>
-          <TextField
-            label="*Activity title"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            label="Description"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
+          <TextField label="*Activity title" fullWidth margin="normal" variant="outlined" />
+          <TextField label="Description" fullWidth margin="normal" variant="outlined" />
         </Box>
 
-        <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+        <Box sx={{ display: "flex", gap: 2, mb: 3, flexDirection: { xs: "column", sm: "row" } }}>
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ mb: 1 }}>*Column 1</Typography>
             {questions.map((question, index) => (
@@ -185,7 +176,6 @@ function MatchingPairs() {
           </Box>
         </Box>
 
-        {/* Button to add more questions */}
         <Button variant="outlined" color="secondary" sx={{ mb: 3 }} onClick={addQuestionRow}>
           + Add more Questions
         </Button>
