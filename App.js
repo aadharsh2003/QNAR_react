@@ -1,12 +1,13 @@
-import { Route, Router } from "wouter";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Login from "./login";
 import Signup from "./signup";
-import Game from "./game"; 
+import Game from "./game";
 import MatchingPairs from "./MatchingPairs";
-import GameSettings from "./gameSettings"; 
+import GameSettings from "./gameSettings";
+import MatchingPairsGame from "./MatchingPairsGame"; // Importing the new game component
 import "./App.css";
 
 function App() {
@@ -25,11 +26,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/game" component={Game} />
-        <Route path="/game-settings" component={GameSettings} /> {/* New route */} 
-        <Route path="/matching-pairs" component={MatchingPairs} /> {/* Adding MatchingPairs Route */}
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/game-settings" element={<GameSettings />} />
+          <Route path="/matching-pairs" element={<MatchingPairs />} />
+          <Route path="/matching-pairs-game" element={<MatchingPairsGame />} />
+        </Routes>
       </Router>
     </ThemeProvider>
   );

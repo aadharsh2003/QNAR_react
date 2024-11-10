@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import { Box, Button, Typography, TextField, IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ImageIcon from "@mui/icons-material/Image";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
 
 function MatchingPairs() {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([
     { col1: "", col2: "", col1Image: null, col2Image: null },
     { col1: "", col2: "", col1Image: null, col2Image: null },
@@ -39,6 +52,22 @@ function MatchingPairs() {
     setQuestions(newQuestions);
   };
 
+  const handleMove = (index) => {
+    if (index > 0) {
+      moveRow(index, -1); // Move up
+    } else if (index < questions.length - 1) {
+      moveRow(index, 1); // Move down
+    }
+  };
+
+  const handleNext = () => {
+    const shuffledPairs = questions.map((pair) => ({ ...pair, col2: pair.col2 }));
+    const shuffledRightItems = shuffle(shuffledPairs.map((pair) => pair.col2));
+
+    // Passing both columns and shuffled right items
+    navigate(`/matching-pairs-game`, { state: { pairs: shuffledPairs, rightItems: shuffledRightItems } });
+  };
+
   return (
     <Box
       sx={{
@@ -50,7 +79,7 @@ function MatchingPairs() {
         minHeight: "100vh",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: "800px", padding: "20px" }}>
+      <Box sx={{ width: "100%", maxWidth: "900px", padding: "20px" }}>
         <Box
           sx={{
             display: "flex",
@@ -161,16 +190,9 @@ function MatchingPairs() {
                 <IconButton onClick={() => handleDeleteRow(index)}>
                   <DeleteIcon />
                 </IconButton>
-                {index > 0 && (
-                  <IconButton onClick={() => moveRow(index, -1)}>
-                    <ArrowUpwardIcon />
-                  </IconButton>
-                )}
-                {index < questions.length - 1 && (
-                  <IconButton onClick={() => moveRow(index, 1)}>
-                    <ArrowDownwardIcon />
-                  </IconButton>
-                )}
+                <IconButton onClick={() => handleMove(index)}>
+                  <SwapVertIcon />
+                </IconButton>
               </Box>
             ))}
           </Box>
@@ -181,7 +203,7 @@ function MatchingPairs() {
         </Button>
 
         <Box sx={{ textAlign: "right" }}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={handleNext}>
             Next
           </Button>
         </Box>
