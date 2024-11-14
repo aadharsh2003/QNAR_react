@@ -7,7 +7,8 @@ import Signup from "./signup";
 import Game from "./game";
 import MatchingPairs from "./MatchingPairs";
 import GameSettings from "./gameSettings";
-import MatchingPairsGame from "./MatchingPairsGame"; // Importing the new game component
+import MatchingPairsGame from "./MatchingPairsGame";
+import Leaf from "./Leaf";
 import "./App.css";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/game-settings" element={<GameSettings />} />
           <Route path="/matching-pairs" element={<MatchingPairs />} />
           <Route path="/matching-pairs-game" element={<MatchingPairsGame />} />
+          <Route path="/leaf" element={<Leaf />} /> {/* Added new route for Leaf */}
         </Routes>
       </Router>
     </ThemeProvider>
