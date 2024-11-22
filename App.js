@@ -9,6 +9,7 @@ import MatchingPairs from "./MatchingPairs";
 import GameSettings from "./gameSettings";
 import MatchingPairsGame from "./MatchingPairsGame";
 import Leaf from "./Leaf";
+import MyActivities from "./MyActivities"; 
 import "./App.css";
 
 function App() {
@@ -34,7 +35,8 @@ function App() {
           <Route path="/game-settings" element={<GameSettings />} />
           <Route path="/matching-pairs" element={<MatchingPairs />} />
           <Route path="/matching-pairs-game" element={<MatchingPairsGame />} />
-          <Route path="/leaf" element={<Leaf />} /> {/* Added new route for Leaf */}
+          <Route path="/leaf" element={<Leaf />} />
+          <Route path="/my-activities" element={<MyActivities />} /> 
         </Routes>
       </Router>
     </ThemeProvider>
