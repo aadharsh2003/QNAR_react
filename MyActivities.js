@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,11 +12,27 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function MyActivities() {
   const [bundles, setBundles] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [sortOption, setSortOption] = useState("Name");
+  const navigate = useNavigate();
+
+  // Fetch bundles from database
+  useEffect(() => {
+    const fetchBundles = async () => {
+      try {
+        const response = await axios.get("/api/bundles");
+        setBundles(response.data);
+      } catch (error) {
+        console.error("Error fetching bundles:", error);
+      }
+    };
+    fetchBundles();
+  }, []);
 
   const handleBundleClick = (id) => {
     setBundles((prevBundles) =>
@@ -29,18 +45,11 @@ function MyActivities() {
   };
 
   const handleAddBundle = () => {
-    const newBundle = {
-      id: Date.now(),
-      title: "",
-      unit: "",
-      grade: "",
-      members: "",
-      date: "",
-      color: "#F5F9F7",
-      isSelected: false,
-      games: [],
-    };
-    setBundles((prevBundles) => [...prevBundles, newBundle]);
+    navigate("/add-bundle");
+  };
+
+  const handleAddGame = (bundleId) => {
+    navigate(`/add-game/${bundleId}`);
   };
 
   const handleSort = (option) => {
@@ -54,56 +63,13 @@ function MyActivities() {
     setAnchorEl(null);
   };
 
-  const handleGameEdit = (bundleId, gameId, newName) => {
-    setBundles((prevBundles) =>
-      prevBundles.map((bundle) =>
-        bundle.id === bundleId
-          ? {
-              ...bundle,
-              games: bundle.games.map((game) =>
-                game.id === gameId ? { ...game, name: newName } : game
-              ),
-            }
-          : bundle
-      )
-    );
-  };
-
-  const handleGameDelete = (bundleId, gameId) => {
-    setBundles((prevBundles) =>
-      prevBundles.map((bundle) =>
-        bundle.id === bundleId
-          ? {
-              ...bundle,
-              games: bundle.games.filter((game) => game.id !== gameId),
-            }
-          : bundle
-      )
-    );
-  };
-
-  const handleAddGame = (bundleId) => {
-    const newGame = {
-      id: Date.now(),
-      name: "",
-      subheading: "",
-    };
-    setBundles((prevBundles) =>
-      prevBundles.map((bundle) =>
-        bundle.id === bundleId
-          ? { ...bundle, games: [...bundle.games, newGame] }
-          : bundle
-      )
-    );
-  };
-
   return (
     <Box
       sx={{
         padding: "20px",
         backgroundColor: "#F5F9F7",
         minHeight: "100vh",
-        display: "block", 
+        display: "block",
       }}
     >
       <Box sx={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
@@ -158,10 +124,11 @@ function MyActivities() {
             display: "flex",
             flexWrap: "wrap",
             gap: 3,
-            alignItems: "flex-start", // Align items to the top
-            justifyContent: "flex-start", // Align content to the left
+            alignItems: "flex-start", // Keep items aligned at the top
+            justifyContent: "flex-start", // Keep items aligned to the left
           }}
         >
+          {/* Render Bundles */}
           {bundles.map((bundle) => (
             <Box key={bundle.id} sx={{ width: "250px" }}>
               <Box
@@ -241,7 +208,7 @@ function MyActivities() {
                 />
               </Box>
 
-              {/* Games Section */}
+              {/* Add Game Button */}
               {bundle.isSelected && (
                 <Box
                   sx={{
@@ -251,57 +218,13 @@ function MyActivities() {
                     mt: 2,
                   }}
                 >
-                  {bundle.games.map((game) => (
-                    <Box
-                      key={game.id}
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 1,
-                        padding: "10px",
-                        backgroundColor: "#FFF",
-                        border: "1px solid #C4C4C4",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      <TextField
-                        placeholder="Game Name"
-                        value={game.name}
-                        onChange={(e) =>
-                          handleGameEdit(bundle.id, game.id, e.target.value)
-                        }
-                        fullWidth
-                        margin="normal"
-                      />
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <IconButton
-                          onClick={() =>
-                            handleGameEdit(bundle.id, game.id, prompt("Edit Game Name:"))
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleGameDelete(bundle.id, game.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  ))}
-                  <Box
+                  <Button
+                    variant="contained"
+                    sx={{ width: "100%", mt: 1 }}
                     onClick={() => handleAddGame(bundle.id)}
-                    sx={{
-                      padding: "10px",
-                      textAlign: "center",
-                      cursor: "pointer",
-                      border: "1px dashed #C4C4C4",
-                      borderRadius: "8px",
-                      mt: 1,
-                    }}
                   >
-                    <AddIcon />
-                    <Typography variant="body2">Add Game</Typography>
-                  </Box>
+                    Add Game
+                  </Button>
                 </Box>
               )}
             </Box>
@@ -321,7 +244,6 @@ function MyActivities() {
               alignItems: "center",
               backgroundColor: "#F9F9F9",
               cursor: "pointer",
-              alignSelf: "flex-start", 
             }}
           >
             <IconButton>
