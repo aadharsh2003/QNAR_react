@@ -7,50 +7,72 @@ import {
   TextField,
   Menu,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Select,
+  MenuItem as MuiMenuItem,
+  Alert,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+// Mock Backend for Simulating API 
+const mockBackend = {
+  bundles: [],
+
+  getBundles: async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(mockBackend.bundles), 500);
+    });
+  },
+
+  addBundle: async (bundle) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newBundle = { ...bundle, id: Date.now() };
+        mockBackend.bundles.push(newBundle);
+        resolve(newBundle);
+      }, 500);
+    });
+  },
+};
+
+const API_BASE_URL = 'http://localhost:3000'; 
 
 function MyActivities() {
   const [bundles, setBundles] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [sortOption, setSortOption] = useState("Name");
-  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [bundleData, setBundleData] = useState({
+    title: "",
+    unit: "",
+    grade: "",
+    subject: "",
+  });
 
-  // Fetch bundles from database
+  // Fetch bundles from mock backend (replacing axios.get)
   useEffect(() => {
     const fetchBundles = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await axios.get("/api/bundles");
-        setBundles(response.data);
+        const data = await mockBackend.getBundles(); // Using mock backend
+        setBundles(data);
       } catch (error) {
+        setError("Error fetching bundles: " + error.message);
         console.error("Error fetching bundles:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchBundles();
   }, []);
-
-  const handleBundleClick = (id) => {
-    setBundles((prevBundles) =>
-      prevBundles.map((bundle) =>
-        bundle.id === id
-          ? { ...bundle, isSelected: !bundle.isSelected }
-          : { ...bundle, isSelected: false }
-      )
-    );
-  };
-
-  const handleAddBundle = () => {
-    navigate("/add-bundle");
-  };
-
-  const handleAddGame = (bundleId) => {
-    navigate(`/add-game/${bundleId}`);
-  };
 
   const handleSort = (option) => {
     setSortOption(option);
@@ -61,6 +83,32 @@ function MyActivities() {
     });
     setBundles(sortedBundles);
     setAnchorEl(null);
+  };
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+    setError(null);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setBundleData({ title: "", unit: "", grade: "", subject: "" });
+    setError(null);
+  };
+
+  const handleSaveBundle = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const newBundle = await mockBackend.addBundle(bundleData); // Using mock backend
+      setBundles((prev) => [...prev, newBundle]);
+      setOpenModal(false);
+    } catch (error) {
+      setError("Error saving bundle: " + error.message);
+      console.error("Error saving bundle:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,7 +127,7 @@ function MyActivities() {
           sx={{
             mb: 3,
             fontWeight: "bold",
-            textAlign: "left", 
+            textAlign: "left",
           }}
         >
           My Activities
@@ -119,120 +167,49 @@ function MyActivities() {
           </Box>
         </Box>
 
+        {/* Loading and Error Messages */}
+        {isLoading && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Loading bundles...
+          </Alert>
+        )}
+        {error && !openModal && (
+          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        )}
+
         <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
             gap: 3,
-            alignItems: "flex-start", // Keep items aligned at the top
-            justifyContent: "flex-start", // Keep items aligned to the left
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
           }}
         >
-          {/* Render Bundles */}
           {bundles.map((bundle) => (
             <Box key={bundle.id} sx={{ width: "250px" }}>
               <Box
-                onClick={() => handleBundleClick(bundle.id)}
                 sx={{
                   padding: "15px",
                   borderRadius: "8px",
-                  backgroundColor: bundle.isSelected ? "#FCE4E4" : bundle.color,
+                  backgroundColor: "#FFF",
                   border: `1px solid #C4C4C4`,
                   cursor: "pointer",
                 }}
               >
-                <TextField
-                  placeholder="Bundle Title"
-                  value={bundle.title}
-                  onChange={(e) =>
-                    setBundles((prevBundles) =>
-                      prevBundles.map((b) =>
-                        b.id === bundle.id ? { ...b, title: e.target.value } : b
-                      )
-                    )
-                  }
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  placeholder="Unit"
-                  value={bundle.unit}
-                  onChange={(e) =>
-                    setBundles((prevBundles) =>
-                      prevBundles.map((b) =>
-                        b.id === bundle.id ? { ...b, unit: e.target.value } : b
-                      )
-                    )
-                  }
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  placeholder="Grade"
-                  value={bundle.grade}
-                  onChange={(e) =>
-                    setBundles((prevBundles) =>
-                      prevBundles.map((b) =>
-                        b.id === bundle.id ? { ...b, grade: e.target.value } : b
-                      )
-                    )
-                  }
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  placeholder="Members"
-                  value={bundle.members}
-                  onChange={(e) =>
-                    setBundles((prevBundles) =>
-                      prevBundles.map((b) =>
-                        b.id === bundle.id ? { ...b, members: e.target.value } : b
-                      )
-                    )
-                  }
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  placeholder="Date"
-                  value={bundle.date}
-                  onChange={(e) =>
-                    setBundles((prevBundles) =>
-                      prevBundles.map((b) =>
-                        b.id === bundle.id ? { ...b, date: e.target.value } : b
-                      )
-                    )
-                  }
-                  fullWidth
-                  margin="normal"
-                />
+                <Typography variant="h6">{bundle.title}</Typography>
+                <Typography variant="body2">Unit: {bundle.unit}</Typography>
+                <Typography variant="body2">Grade: {bundle.grade}</Typography>
+                <Typography variant="body2">Subject: {bundle.subject}</Typography>
               </Box>
-
-              {/* Add Game Button */}
-              {bundle.isSelected && (
-                <Box
-                  sx={{
-                    backgroundColor: "#FFF8E3",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    mt: 2,
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    sx={{ width: "100%", mt: 1 }}
-                    onClick={() => handleAddGame(bundle.id)}
-                  >
-                    Add Game
-                  </Button>
-                </Box>
-              )}
             </Box>
           ))}
 
           {/* Add Bundle Section */}
           <Box
-            onClick={handleAddBundle}
+            onClick={handleOpenModal}
             sx={{
               width: "250px",
               padding: "15px",
@@ -255,6 +232,71 @@ function MyActivities() {
           </Box>
         </Box>
       </Box>
+
+      {/* Add Bundle Modal */}
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>
+          Add New Bundle
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            Fill out the following information to create a bundle.
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Bundle Title"
+            value={bundleData.title}
+            onChange={(e) => setBundleData({ ...bundleData, title: e.target.value })}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Unit Title"
+            value={bundleData.unit}
+            onChange={(e) => setBundleData({ ...bundleData, unit: e.target.value })}
+            margin="normal"
+          />
+          <Select
+            fullWidth
+            value={bundleData.grade}
+            onChange={(e) => setBundleData({ ...bundleData, grade: e.target.value })}
+            displayEmpty
+            margin="normal"
+          >
+            <MuiMenuItem value="">
+              <em>Select Grade</em>
+            </MuiMenuItem>
+            {Array.from({ length: 12 }, (_, i) => (
+              <MuiMenuItem key={i + 1} value={`Grade ${i + 1}`}>
+                Grade {i + 1}
+              </MuiMenuItem>
+            ))}
+          </Select>
+          <TextField
+            fullWidth
+            label="Select Subject"
+            value={bundleData.subject}
+            onChange={(e) => setBundleData({ ...bundleData, subject: e.target.value })}
+            margin="normal"
+          />
+          {error && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {error}
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Cancel</Button>
+          <Button
+            onClick={handleSaveBundle}
+            variant="contained"
+            color="primary"
+            disabled={isLoading}
+          >
+            {isLoading ? "Saving..." : "Next"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
