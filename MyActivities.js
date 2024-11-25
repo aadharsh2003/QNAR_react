@@ -100,7 +100,7 @@ function MyActivities() {
     setIsLoading(true);
     setError(null);
     try {
-      const newBundle = await mockBackend.addBundle(bundleData); // Using mock backend
+      const newBundle = await mockBackend.addBundle(bundleData); 
       setBundles((prev) => [...prev, newBundle]);
       setOpenModal(false);
     } catch (error) {
