@@ -5,6 +5,7 @@ import MicrosoftIcon from "./logos/microsoft.png";
 import FacebookIcon from "./logos/facebook.png";
 import AppleIcon from "./logos/apple.png";
 import OnlineImage from "./logos/online.png";
+import "./Login.css";
 
 function Signup() {
   return (
@@ -55,22 +56,26 @@ function Signup() {
         >
           <Button
             variant="outlined"
-            startIcon={<img src={FacebookIcon} alt="Facebook" style={{ width: "100%", height: "100%", borderRadius: "50%" }} />}
             sx={{
               width: "50px",
               height: "50px",
               borderRadius: "50%",
+              padding: 0,
             }}
-          />
+          >
+            <img src={FacebookIcon} alt="Facebook" style={{ width: "100%", height: "100%", borderRadius: "50%" }} />
+          </Button>
           <Button
             variant="outlined"
-            startIcon={<img src={AppleIcon} alt="Apple" style={{ width: "100%", height: "100%", borderRadius: "50%" }} />}
             sx={{
               width: "50px",
               height: "50px",
               borderRadius: "50%",
+              padding: 0,
             }}
-          />
+          >
+            <img src={AppleIcon} alt="Apple" style={{ width: "100%", height: "100%", borderRadius: "50%" }} />
+          </Button>
         </Box>
         <Button
           variant="contained"
@@ -91,7 +96,13 @@ function Signup() {
           </Link>
         </Typography>
       </Box>
-      <Box sx={{ width: "50%", paddingLeft: "20px" }}>
+      <Box
+        sx={{
+          width: "50%",
+          paddingLeft: "20px",
+          display: { xs: "none", sm: "block" }, // Hide the image and the text on right for  screens smaller than 600px
+        }}
+      >
         <img src={OnlineImage} alt="Online Learning" style={{ width: "100%" }} />
         <Typography variant="h5">Lorem ipsum dolor</Typography>
         <Typography variant="body1">

@@ -1,0 +1,7 @@
+/* Hide the right-section on smaller screens */
+@media (max-width: 600px) {
+    .right-section {
+      display: none;
+    }
+  }
+  

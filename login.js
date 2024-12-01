@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Button, Typography, Link } from "@mui/material";
+import { Box, Button, Typography, Link, TextField } from "@mui/material";
 import GoogleIcon from "./logos/google.png";
 import MicrosoftIcon from "./logos/microsoft.png";
 import FacebookIcon from "./logos/facebook.png";
 import AppleIcon from "./logos/apple.png";
 import OnlineImage from "./logos/online.png";
+import "./Login.css"; 
 
 function Login() {
   return (
@@ -29,6 +30,23 @@ function Login() {
         <Typography variant="h4" align="center" sx={{ mb: 3, color: "#5B945B" }}>
           Login to Qnar
         </Typography>
+        
+        {/* Email and Password Fields */}
+        <TextField
+          label="Email"
+          type="email"
+          fullWidth
+          variant="outlined"
+          sx={{ marginBottom: "1rem" }}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          fullWidth
+          variant="outlined"
+          sx={{ marginBottom: "1rem" }}
+        />
+        
         <Button
           variant="outlined"
           startIcon={<img src={GoogleIcon} alt="Google" style={{ width: "20px" }} />}
@@ -43,9 +61,11 @@ function Login() {
         >
           Continue with Microsoft
         </Button>
+        
         <Typography sx={{ textAlign: "center", marginBottom: "1rem", color: "#5B945B" }}>
           or continue with
         </Typography>
+        
         <Box
           sx={{
             display: "flex",
@@ -72,6 +92,7 @@ function Login() {
             }}
           />
         </Box>
+        
         <Typography variant="body2" sx={{ textAlign: "center" }}>
           Don’t have an account?{" "}
           <Link href="/signup" underline="hover">
@@ -79,7 +100,9 @@ function Login() {
           </Link>
         </Typography>
       </Box>
-      <Box sx={{ width: "50%", paddingLeft: "20px" }}>
+      
+      {/* Image and text on the right, hidden at 600px and below */}
+      <Box className="right-section">
         <img src={OnlineImage} alt="Online Learning" style={{ width: "100%" }} />
         <Typography variant="h5">Lorem ipsum dolor</Typography>
         <Typography variant="body1">
